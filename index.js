@@ -1,7 +1,9 @@
 const request = require("request");
 const qs = require("querystring");
+const argv = require('yargs').argv;
+
 const Gipphy = require("./Gipphy");
-const GamesNBA = require('./GamesNBA')
+const GamesNBA = require('./GamesNBA');
 
 const gifOptions = {
     url:
@@ -24,14 +26,18 @@ const gamesOptions = {
 
 const gifCallback = (error, response, body) => {
     const data = JSON.parse(body).data;
-    console.log(
-        data.map((item) => new Gipphy(item.id, item.url, item.title, item.rating))
-    );
+    const listGif = [];
+    data.map((item) => {
+        const gif = new Gipphy(item.id, item.url, item.title, item.rating);
+        listGif.push(gif);
+    })
+    console.table(listGif);
 };
 
 const gameCallback = (err, res, body) => {
     const data = JSON.parse(body).data;
-    console.log( data.map( (match) => {
+    const listInfo = [];
+    data.map( (match) => {
         const game = new GamesNBA(
             match.date,
             match.home_team,
@@ -41,17 +47,19 @@ const gameCallback = (err, res, body) => {
             match.status,
             match.season
         )
-        return game.info
+        listInfo.push(game.info);
     })
-    );
+    console.table(listInfo)
 };
 
-const getGifAPI = () => {
-    request(gifOptions, gifCallback);
-};
+const fetchAPI = () => {
+    if(argv._[0] === 'nba'){
+        request(gamesOptions, gameCallback);
+    } 
+    else if(argv._[0] === 'gipphy')
+        request(gifOptions, gifCallback);
+    else    
+        console.log("Not found");
+}
 
-const getGameAPI = () => {
-    request(gamesOptions, gameCallback);
-};
-
-getGameAPI();
+fetchAPI();

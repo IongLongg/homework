@@ -7,6 +7,15 @@ class Gipphy{
         this.title = title;
         this.rating = rating;
     }
+
+    get info(){
+        return {
+            id : this.id,
+            url : this.url,
+            title : this.title,
+            rating : this.rating
+        }
+    }
 }
 
 module.exports = Gipphy;
