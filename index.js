@@ -4,6 +4,8 @@ const argv = require('yargs').argv;
 
 const Gipphy = require("./Gipphy");
 const GamesNBA = require('./GamesNBA');
+const TeamsNBA = require("./TeamsNBA");
+const PlayersNBA = require("./PlayersNBA");
 
 const gifOptions = {
     url:
@@ -22,7 +24,27 @@ const gamesOptions = {
         "x-rapidapi-key": "a6b3fd5546msh074de9a1a38a16ap16d5bcjsn75a46a51e0d0",
         useQueryString: true,
     },
+    qs: {page: '0', per_page: '25'},
 };
+
+const teamsOptions = {
+    url: "https://free-nba.p.rapidapi.com/teams",
+    headers: {
+        "x-rapidapi-host": "free-nba.p.rapidapi.com",
+        "x-rapidapi-key": "a6b3fd5546msh074de9a1a38a16ap16d5bcjsn75a46a51e0d0",
+        useQueryString: true,
+    },
+}
+
+const playerOptions = {
+    url: "https://free-nba.p.rapidapi.com/players?" + qs.stringify({ search : 'paul'}),
+    qs: {page: '0', per_page: '25'},
+    headers: {
+        "x-rapidapi-host": "free-nba.p.rapidapi.com",
+        "x-rapidapi-key": "a6b3fd5546msh074de9a1a38a16ap16d5bcjsn75a46a51e0d0",
+        useQueryString: true,
+    },
+}
 
 const gifCallback = (error, response, body) => {
     const data = JSON.parse(body).data;
@@ -52,14 +74,59 @@ const gameCallback = (err, res, body) => {
     console.table(listInfo)
 };
 
+const teamCallback = (err, res, body) => {
+    const data = JSON.parse(body).data;
+    const listInfo = [];
+    data.map( (item) => {
+        const team = new TeamsNBA(
+            item.id, 
+            item.abbreviation, 
+            item.city, 
+            item.conference, 
+            item.division, 
+            item.full_name, 
+            item.name
+        )
+        listInfo.push(team.info);
+    })
+    console.table(listInfo)
+}
+
+const playerCallback = (err, res, body) => {
+    const data = JSON.parse(body).data;
+    const listInfo = [];
+    data.map( (item) => {
+        const player = new PlayersNBA(
+            item.id,
+            item.first_name,
+            item.height_feet,
+            item.height_inches,
+            item.last_name,
+            item.position,
+            item.team,
+            item.weight_pounds
+        )
+        listInfo.push(player.info);
+    })
+    console.table(listInfo)
+};
+
 const fetchAPI = () => {
-    if(argv._[0] === 'nba'){
+    if(argv._[0] === 'game-nba'){
         request(gamesOptions, gameCallback);
     } 
-    else if(argv._[0] === 'gipphy')
+    else if(argv._[0] === 'gipphy'){
         request(gifOptions, gifCallback);
-    else    
+    }
+    else if(argv._[0] === 'team-nba'){
+        request(teamsOptions, teamCallback);
+    }
+    else if(argv._[0] === 'player-nba'){
+        request(playerOptions, playerCallback);
+    }
+    else{
         console.log("Not found");
+    }
 }
 
 fetchAPI();

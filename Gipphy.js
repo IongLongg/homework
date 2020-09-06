@@ -10,10 +10,10 @@ class Gipphy{
 
     get info(){
         return {
-            id : this.id,
-            url : this.url,
-            title : this.title,
-            rating : this.rating
+            'Id' : this.id,
+            'Url' : this.url,
+            'Title' : this.title,
+            'Rating' : this.rating
         }
     }
 }

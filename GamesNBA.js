@@ -11,13 +11,13 @@ class GamesNBA{
 
     get info(){
         return {
-            date : this.date.substring(0, 10),
-            home_team : this.home_team.full_name,
-            home_team_score : this.home_team_score,
-            visitor_team : this.visitor_team.full_name,
-            visitor_team_score : this.visitor_team_score,
-            status : this.status,
-            season : this.season
+            'Date' : this.date.substring(0, 10),
+            'Home team' : this.home_team.full_name,
+            'Home team score' : this.home_team_score,
+            'Visitor team' : this.visitor_team.full_name,
+            'Visitor team score' : this.visitor_team_score,
+            'Status' : this.status,
+            'Season' : this.season
         }
     }
 }
