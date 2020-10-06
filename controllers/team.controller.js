@@ -1,6 +1,11 @@
-const db = require('../lowdb')
+const Team = require('../models/TeamsNBA')
 
-module.exports.index = (req, res) => {
-    const teams = db.get('teams').value()
+module.exports.index = async (req, res) => {
+    const teams = await Team.find().exec()
     res.json(teams)
+}
+
+module.exports.getById = async (req, res) => {
+    const team = await Team.find({id : parseInt(req.params.id)}).exec()
+    res.send(team)
 }

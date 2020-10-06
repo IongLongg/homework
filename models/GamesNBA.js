@@ -1,19 +1,34 @@
-class GamesNBA{
-    constructor(game){
-        this.game = game
-    }
+const mongoose = require('mongoose')
 
-    get info(){
-        return {
-            'Date' : this.game.date.substring(0, 10),
-            'Home team' : this.game.home_team.full_name,
-            'Home team score' : this.game.home_team_score,
-            'Visitor team' : this.game.visitor_team.full_name,
-            'Visitor team score' : this.game.visitor_team_score,
-            'Status' : this.game.status,
-            'Season' : this.game.season
-        }
-    }
-}
+const gameSchema = new mongoose.Schema({
+    _id : Number,
+    date : Date,
+    home_team : {
+        _id : Number,
+        abbreviation : String,
+        city : String,
+        conference : String,
+        division : String,
+        full_name : String,
+        name : String
+    },
+    home_team_score : Number,
+    period : Number,
+    season : Number,
+    status : String,
+    time : String,
+    visited_team : {
+        _id : Number,
+        abbreviation : String,
+        city : String,
+        conference : String,
+        division : String,
+        full_name : String,
+        name : String
+    },
+    visited_team_score : Number
+})
 
-module.exports = GamesNBA;
+const Game = mongoose.model('Game', gameSchema, 'games')
+
+module.exports = Game

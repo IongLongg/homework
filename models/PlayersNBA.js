@@ -1,19 +1,26 @@
-class PlayersNBA{
-    constructor(player){
-        this.player = player
-    }
+const mongoose = require('mongoose')
 
-    get info(){
-        return {
-            "Id": this.player.id,
-            "Full name": `${this.player.first_name} ${this.player.last_name}` ,
-            "Height feet": this.player.height_feet,
-            "Height inches": this.player.height_inches,
-            "Position": this.player.position,
-            "Team": `${this.player.team.full_name}`,
-            "Weight pounds": this.player.weight_pounds
-        }
-    }
-}
 
-module.exports = PlayersNBA;
+
+const playerSchema = new mongoose.Schema({
+    _id : Number,
+    first_name: String,
+    height_feet: Number,
+    height_inches: Number,
+    last_name: String,
+    position: String,
+    team : {
+        _id: Number,
+        abbreviation: String,
+        city: String,
+        conference: String,
+        division: String,
+        full_name: String,
+        name: String
+    },
+    weight_pounds: Number
+})
+
+const Player = mongoose.model('Player', playerSchema, 'players')
+
+module.exports = Player

@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-const teamController = require('../controllers/team.controller')
+const controller = require('../controllers/team.controller')
+const middleware = require('../middleware/request.validate')
 
-router.get('/', teamController.index)
+router.get('/', controller.index)
+
+router.get('/:id', middleware.getById ,controller.getById)
 
 module.exports = router

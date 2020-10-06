@@ -1,19 +1,15 @@
-class TeamsNBA{
-    constructor(team){
-        this.team = team
-    }
+const mongoose = require('mongoose')
 
-    get info(){
-        return {
-            "Id": this.team.id,
-            "Abbreviation": this.team.abbreviation,
-            "City": this.team.city,
-            "Conference": this.team.conference,
-            "Division": this.team.division,
-            "Full name": this.team.full_name,
-            "Name": this.team.name
-        }
-    }
-}
+const teamSchema = new mongoose.Schema({
+    _id: Number,
+    abbreviation: String,
+    city: String,
+    conference: String,
+    division: String,
+    full_name: String,
+    name: String
+})
 
-module.exports = TeamsNBA;
+const Team = mongoose.model('Team', teamSchema, 'teams')
+
+module.exports = Team
